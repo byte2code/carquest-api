@@ -6,6 +6,8 @@ Spring Boot REST API for managing cars with MySQL persistence, JWT authenticatio
 
 CarQuest is a compact Spring Boot project that demonstrates a secured CRUD-style REST API for car records. It includes user registration and JWT-based login, then protects car operations behind stateless bearer-token authentication.
 
+This repository also includes a companion **Review Service** under `review-service/` (typically running on port `8081`) that provides CRUD endpoints for car reviews.
+
 ## Concepts and Features Covered
 
 - Spring Boot REST API setup
@@ -15,6 +17,7 @@ CarQuest is a compact Spring Boot project that demonstrates a secured CRUD-style
 - Argon2 password encoding for registered users
 - Public user registration and token-based login flow
 - CRUD-style endpoints for car records
+- Companion review microservice (separate Spring Boot app)
 
 ## Tech Stack
 
@@ -38,6 +41,7 @@ CarQuest/
 ├── pom.xml
 ├── mvnw
 ├── mvnw.cmd
+├── review-service/
 └── src/
     ├── main/
     │   ├── java/com/CN/CarQuest/
@@ -109,6 +113,23 @@ Example request body for adding a car:
 }
 ```
 
+## Review Service
+
+The companion review service lives under `review-service/` and exposes endpoints under `/review`.
+
+1. Open a second terminal in `review-service/`.
+2. Update its MySQL config in `review-service/src/main/resources/application.yml` if needed.
+3. Run `mvn test`.
+4. Run `mvn spring-boot:run`.
+
+Review service endpoints:
+
+- `POST /review/add`
+- `PUT /review/update/{id}`
+- `GET /review/{name}`
+- `GET /review/getAll`
+- `DELETE /review/{id}`
+
 ## Learning Highlights
 
 - Demonstrates JWT-secured REST endpoints using a custom `OncePerRequestFilter`
@@ -119,4 +140,3 @@ Example request body for adding a car:
 
 - Suggested repository description: `Spring Boot REST API for car management with MySQL persistence, JWT authentication, and Argon2 password encoding.`
 - Suggested topics: `java`, `java-17`, `spring-boot`, `spring-security`, `spring-data-jpa`, `mysql`, `rest-api`, `jwt`, `argon2`, `car-management`, `maven`, `learning-project`, `portfolio-project`
-
