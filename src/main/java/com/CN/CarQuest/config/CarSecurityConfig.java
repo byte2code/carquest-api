@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -45,16 +46,14 @@ public class CarSecurityConfig {
 		return builder.getAuthenticationManager();
 	}
 
-	//Create Argon2 PasswordEncoder bean with properties as described in the problem statement
 	@Bean
-	    public Argon2PasswordEncoder passwordEncoder() {
-	        int saltLength = 16;         // bytes
-	        int hashLength = 32;         // bytes
-	        int parallelism = 4;         // threads
-	        int memory = 65536;          // KB
-	        int iterations = 5;          // number of iterations
-
-	        return new Argon2PasswordEncoder(saltLength, hashLength, parallelism, memory, iterations);
-	    }
+	public PasswordEncoder passwordEncoder() {
+		int saltLength = 16;   // Salt length
+		int hashLength = 32;   // Hash length
+		int parallelism = 4;   // Number of threads
+		int memory = 65536;    // Memory usage (in kilobytes)
+		int iterations = 5;    // Number of iterations
+		return new Argon2PasswordEncoder(saltLength, hashLength, parallelism, memory, iterations);
+	}
 
 }

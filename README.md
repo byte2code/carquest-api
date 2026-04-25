@@ -1,12 +1,12 @@
 # CarQuest API
 
-Spring Boot REST API for managing cars with MySQL persistence, JWT authentication, and Argon2 password encoding.
+Spring Boot REST API for managing cars with MySQL persistence, JWT authentication, Argon2 password encoding, and review-service integration via `RestTemplate`.
 
 ## Overview
 
 CarQuest is a compact Spring Boot project that demonstrates a secured CRUD-style REST API for car records. It includes user registration and JWT-based login, then protects car operations behind stateless bearer-token authentication.
 
-This repository also includes a companion **Review Service** under `review-service/` (typically running on port `8081`) that provides CRUD endpoints for car reviews.
+This version integrates with an external Review Service: `GET /car/{name}` enriches the response with review strings fetched over HTTP, and `POST /car/addCarReview` forwards a review request to the review service.
 
 ## Concepts and Features Covered
 
@@ -17,7 +17,7 @@ This repository also includes a companion **Review Service** under `review-servi
 - Argon2 password encoding for registered users
 - Public user registration and token-based login flow
 - CRUD-style endpoints for car records
-- Companion review microservice (separate Spring Boot app)
+- Inter-service communication with a review service using `RestTemplate`
 
 ## Tech Stack
 
@@ -45,6 +45,7 @@ CarQuest/
 └── src/
     ├── main/
     │   ├── java/com/CN/CarQuest/
+    │   │   ├── communicator/
     │   │   ├── config/
     │   │   ├── controller/
     │   │   ├── dto/
@@ -83,60 +84,17 @@ Available endpoints:
 - `PUT /car/{name}`
 - `DELETE /car/{name}`
 
-Example request body for user registration:
+## Review Service Dependency
 
-```json
-{
-  "username": "john",
-  "password": "john123"
-}
-```
+This version expects a separate Review Service to be running. The default URLs in `ReviewServiceCommunicator` point to:
 
-Example request body for login:
+- `POST http://localhost:8082/review/add`
+- `GET http://localhost:8082/review/car/{carName}`
 
-```json
-{
-  "username": "john",
-  "password": "john123"
-}
-```
-
-Example request body for adding a car:
-
-```json
-{
-  "name": "i20",
-  "brand": "Hyundai",
-  "color": "White",
-  "modelYear": 2022,
-  "price": 850000
-}
-```
-
-## Review Service
-
-The companion review service lives under `review-service/` and exposes endpoints under `/review`.
-
-1. Open a second terminal in `review-service/`.
-2. Update its MySQL config in `review-service/src/main/resources/application.yml` if needed.
-3. Run `mvn test`.
-4. Run `mvn spring-boot:run`.
-
-Review service endpoints:
-
-- `POST /review/add`
-- `PUT /review/update/{id}`
-- `GET /review/{name}`
-- `GET /review/getAll`
-- `DELETE /review/{id}`
-
-## Learning Highlights
-
-- Demonstrates JWT-secured REST endpoints using a custom `OncePerRequestFilter`
-- Shows Argon2 password hashing configuration for user registration
-- Uses JPA repositories to keep persistence simple for CRUD flows
+If you’re using the bundled `review-service/` folder from v2, note its routes/port may differ; keep code unchanged and align your local services accordingly when running.
 
 ## GitHub Metadata
 
-- Suggested repository description: `Spring Boot REST API for car management with MySQL persistence, JWT authentication, and Argon2 password encoding.`
-- Suggested topics: `java`, `java-17`, `spring-boot`, `spring-security`, `spring-data-jpa`, `mysql`, `rest-api`, `jwt`, `argon2`, `car-management`, `maven`, `learning-project`, `portfolio-project`
+- Suggested repository description: `Spring Boot REST API for car management with MySQL persistence, JWT authentication, Argon2 password encoding, and review-service integration via RestTemplate.`
+- Suggested topics: `java`, `java-17`, `spring-boot`, `spring-security`, `spring-data-jpa`, `mysql`, `rest-api`, `jwt`, `argon2`, `resttemplate`, `microservices`, `car-management`, `maven`, `learning-project`, `portfolio-project`
+
